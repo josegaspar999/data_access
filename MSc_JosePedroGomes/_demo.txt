@@ -1,0 +1,11 @@
+
+1. For a demo where you download a sequence of images
+run the command / follow the next steps:
+
+(... please fill information here)
+
+
+2. For a demo where you show, as many times as desired, the sequence
+run the command / follow the next steps:
+
+(... please fill information here)
