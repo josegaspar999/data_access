@@ -1,6 +1,6 @@
 # data_access
 
-Managing datasets involving sequences of images
+Managing datasets involving sequences of images,
 2.9.2021 J. Gaspar
 
 Folder mcode has Matlab functions that help:
@@ -11,3 +11,6 @@ Folder mcode has Matlab functions that help:
 Folders MSc\* contain usage examples
 - see files data_download_info.m to find repository URLs
 - see other .m files illustrating data access
+
+Contact:
+www.isr.tecnico.ulisboa.pt/~jag
