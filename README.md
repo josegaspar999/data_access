@@ -1,6 +1,6 @@
 # data_access
 
-Managing datasets involving sequences of images,
+Manage datasets based on sequences of images,
 2.9.2021 J. Gaspar
 
 Folder mcode has Matlab functions that help:
