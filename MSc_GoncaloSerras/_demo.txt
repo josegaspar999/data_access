@@ -3,10 +3,10 @@
 1. For a demo where you download a sequence of images
 run the command / follow the next steps:
 
-data_download
+>> data_download
 
 
 2. For a demo where you show, as many times as desired, the sequence
 run the command / follow the next steps:
 
-netcam5_data_tst
+>> netcam5_data_tst
