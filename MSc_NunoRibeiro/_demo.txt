@@ -1,0 +1,6 @@
+
+1. For a demo where you download a sequence of images run the command:
+	>> data_download
+
+2. For a demo where you show, as many times as desired, the sequence run the command:
+	>> nomadic_data_tst
