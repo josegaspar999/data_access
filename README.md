@@ -1,7 +1,10 @@
-# data_access
+# Project data_access
 
 Manage datasets based on sequences of images,
 2.9.2021 J. Gaspar
+
+Github web site
+[https://github.com/josegaspar999/data_access](https://github.com/josegaspar999/data_access)
 
 Folder mcode has Matlab functions that help:
 - data download
@@ -13,4 +16,4 @@ Folders MSc\* contain usage examples
 - see other .m files illustrating data access
 
 Contact:
-www.isr.tecnico.ulisboa.pt/~jag
+[www.isr.tecnico.ulisboa.pt/~jag](www.isr.tecnico.ulisboa.pt/~jag)
