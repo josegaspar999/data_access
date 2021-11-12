@@ -16,4 +16,4 @@ Folders MSc\* contain usage examples
 - see other .m files illustrating data access
 
 Contact:
-[www.isr.tecnico.ulisboa.pt/~jag](www.isr.tecnico.ulisboa.pt/~jag)
+[www.isr.tecnico.ulisboa.pt/~jag](http://www.isr.tecnico.ulisboa.pt/~jag)
