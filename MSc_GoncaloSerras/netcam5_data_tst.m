@@ -1,6 +1,6 @@
 function netcam5_data_tst( tstId )
 if nargin<1
-    tstId= 5; %6; %5; %4; %3; %2;
+    tstId= 1; %6; %5; %4; %3; %2;
 end
 
 switch tstId

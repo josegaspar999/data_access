@@ -19,6 +19,8 @@ end
 if isnumeric(dataId)
     dataId = num2str(dataId);
 end
+
+% Call dataset *LA, *DL, *RS
 if dataId(1)=='*'
     ret= netcam5_data_old( dataId(2:end) );
     return
@@ -65,6 +67,7 @@ function ret= netcam5_data_old( dataId )
 % c:\msc\netcam5      Gonçalo Serras [directoria própria]         netcam5_data.m
 dataId2= dataId(1:2);
 dataId3= dataId(3:end);
+dataId3=str2double(dataId3);
 
 switch dataId2
     case 'RS', ret= ptsurv3_data( dataId3 );
