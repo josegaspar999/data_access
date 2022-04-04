@@ -20,6 +20,8 @@ run the command / follow the next steps:
 
 Datasets & simulation SW:
 
+Camera and IMU on a DC motors miniature car
+https://www.dropbox.com/sh/o16tecm7n4bfkk0/AABcj3jCY-peCCfa8BQwIHrKa?dl=0
+
 EUROC MAV dataset V1_01_medium
 https://projects.asl.ethz.ch/datasets/doku.php?id=kmavvisualinertialdatasets
-https://www.dropbox.com/sh/o16tecm7n4bfkk0/AABcj3jCY-peCCfa8BQwIHrKa?dl=0
