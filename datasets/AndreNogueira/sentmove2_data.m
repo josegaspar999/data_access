@@ -1,4 +1,4 @@
-function ret = neurocams3_data(dataId, options)
+function ret = sentmove2_data(dataId, options)
 % Function that returns the dataset informations
 %
 % Arguments:
@@ -11,11 +11,11 @@ function ret = neurocams3_data(dataId, options)
 %           information, zoom, etc.
 
 % usages:
-% ret= neurocams3_data( dataId )
-% fullfilename= neurocams3_data( dataId, filename )
+% ret= sentmove2_data( dataId )
+% fullfilename= sentmove2_data( dataId, filename )
 
 % to test this file: 
-% neurocams3_data_tst
+% sentmove2_data_tst
 
 if nargin < 1
     dataId = 1;

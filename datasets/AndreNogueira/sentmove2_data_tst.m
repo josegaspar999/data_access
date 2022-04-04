@@ -1,4 +1,4 @@
-function neurocams3_data_tst( tstId )
+function sentmove2_data_tst( tstId )
 if nargin<1
     tstId= 40; %60; %50; %41; %40; %32; %30;
 end
@@ -7,9 +7,9 @@ switch tstId
     case {30, 31}
         figure(30); clf
         if tstId==30
-            ret= neurocams3_data( 'imv1m_cam0' );
+            ret= sentmove2_data( 'imv1m_cam0' );
         else
-            ret= neurocams3_data( 'imv1m_cam1' );
+            ret= sentmove2_data( 'imv1m_cam1' );
         end
         imax= length(ret.iRange);
         for i= 1:imax
@@ -22,8 +22,8 @@ switch tstId
 
     case 32
         figure(30); clf
-        ret1= neurocams3_data( 'imv1m_cam0' );
-        ret2= neurocams3_data( 'imv1m_cam1' );
+        ret1= sentmove2_data( 'imv1m_cam0' );
+        ret2= sentmove2_data( 'imv1m_cam1' );
         imax= length(ret1.iRange);
         for i= 1:imax
             f1= sprintf(ret1.bfname, ret1.iRange(i));
@@ -40,7 +40,7 @@ switch tstId
     case 40
         % Set up the figure and dataset
         [~,f1,f2]=set_double_fig;
-        ret= neurocams3_data( 'mfpf_02' );
+        ret= sentmove2_data( 'mfpf_02' );
         imax= length(ret.iRange);
         
         % Set up the orientation plot
@@ -51,11 +51,11 @@ switch tstId
         title(f2, 'Robot Orientation');
         
         % Get the dataset images and IMU data
-        Images = readtable( neurocams3_data([], '../img.txt') );
+        Images = readtable( sentmove2_data([], '../img.txt') );
         tImages = table2array(Images(:,1));
         fileImages = table2array(Images(:,2));
         
-        IMU = load( neurocams3_data( [], '../imu.mat') );
+        IMU = load( sentmove2_data( [], '../imu.mat') );
         t = IMU.time_float(:,1);
         quat = IMU.quat';
         quat0 = quat(1,:);
