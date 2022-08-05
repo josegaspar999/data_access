@@ -4,6 +4,9 @@ Minimal demo to run in Matlab
 
 -----------------------------
 
+0. In case you do not have data_download.m in your path, just add it with
+	>> ini_path
+
 1. For a demo where you download a sequence of images, run the command:
 	>> data_download
 
