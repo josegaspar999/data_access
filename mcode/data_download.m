@@ -42,30 +42,37 @@ end
 if nargin<1 || isempty(dataId)
     dataId= define_datasets_to_download( options ); % enter the interactive mode
 end
-ret= [];
+ret2= [];
 
 % data download and install
 %
 if isnumeric(dataId)
-    % is a number
-    data_download_exec(sprintf('%02d', dataId));
+    % is a number (TO DO: move this if into the *_exec fn)
+    ret2= data_download_exec(sprintf('%02d', dataId), options);
 elseif ischar(dataId)
     % is a single string
-    data_download_exec(dataId);
+    ret2= data_download_exec(dataId, options);
 else
     % is a cell
+    ret2= {};
     for i=1:length(dataId)
-        data_download_exec(dataId{i});
+        ret2{i}= data_download_exec(dataId{i}, options);
     end
 end
 
 if nargout>0
-    ret_= ret;
+    ret_= ret2;
 end
 return; % end of main function
 
 
 % ------------------------------------------------------------
+function mkfolder_if_needed( pname )
+if ~exist(pname, 'dir')
+    mkdir(pname);
+end
+
+
 function ret= installed_dataset(pname, datasetInfo)
 % two cases
 % (i) datasetInfo has a field "mkfolder" and that folder exists
@@ -165,7 +172,11 @@ return
 
 
 % ------------------------------------------------------------
-function data_download_exec(dataId)
+function ret2= data_download_exec(dataId, options)
+if nargin<1
+    options= [];
+end
+ret2= [];
 
 % get info on the dataId 
 %
@@ -174,16 +185,18 @@ if isempty(ret)
     error('specified dataId not found')
 end
 
-% create a tmp subfolder
+% create a tmp subfolder under "p" (i.e. in "data" folder)
 %
 p= datasets_outpath;
-if ~exist([p 'tmp'], 'dir')
-    mkdir(p, 'tmp');
-end
+mkfolder_if_needed( fullfile(p, 'tmp') );
 
-% download the file
-%
-ofname= [p 'tmp/' ret.ofname];
+% download the file to a tmp folder
+%   ofname= [p 'tmp/' ret.ofname];
+ofname= fullfile(p, 'tmp', ret.ofname);
+if isfield(ret, 'mkfolder')
+    % use also mkfolder as a subfolder of tmp
+    ofname= fullfile(p, 'tmp', ret.mkfolder, ret.ofname);
+end
 downloadNeeded= 1;
 if exist( ofname, 'file' )
     str= {'Found previously downloaded:', ofname, 'Download again and overwrite?'};
@@ -192,19 +205,29 @@ if exist( ofname, 'file' )
         downloadNeeded= 0;
     end
 end
+if isfield(options, 'download_info') && options.download_info
+    ret2= struct('url', ret.url, 'ofname',ofname, 'downloadNeeded',downloadNeeded);
+    return
+end
 if downloadNeeded
     str= {'Please wait, downloading:', ret.url, 'To the tmp file:', ofname};
     h= msgbox(str);
     %urlwrite(ret.url, ofname)
-    try
-        data_download_urlwrite(ret.url, ofname);
-    catch
-        if ishandle(h), close(h); end
+    okFlag= data_download_urlwrite12(ret.url, ofname);
+    %     try
+    %         data_download_urlwrite12(ret.url, ofname);
+    %     catch
+    %         if ishandle(h), close(h); end
+    %         disp(['FAILED download of: ', ofname]);
+    %         errordlg({'FAILED download of:', ofname});
+    %         return
+    %     end
+    if ishandle(h), close(h); end % close the msgbox if the user didn't
+    if ~okFlag
         disp(['FAILED download of: ', ofname]);
         errordlg({'FAILED download of:', ofname});
         return
     end
-    if ishandle(h), close(h); end
 end
 
 % extract the downloaded file
@@ -213,9 +236,16 @@ if ~exist(ofname, 'file')
     msgbox({'FAILED download of:', ofname});
     return
 end
+
 [~,dname,ext]= fileparts( ofname );
+% ^ assumed a well formed zip brings inside the foldername
+if isfield(ret, 'mkfolder')
+    % mkfolder will contain the unzip (instead of the zip filename)
+    dname= fullfile( ret.mkfolder );
+end
+
 extractNeeded= 1;
-if exist( dname, 'file' )
+if exist( dname, 'dir' )
     str= {'Found extracted:', ofname, 'Extract once more?'};
     button= questdlg( str, 'Extract once more?', 'Yes', 'No', 'No' );
     if strcmp( button, 'No' )
@@ -224,7 +254,7 @@ if exist( dname, 'file' )
 end
 if extractNeeded
     if isfield(ret, 'mkfolder')
-        p= [p filesep ret.mkfolder];
+        p= fullfile(p, ret.mkfolder);
     end
     str= {'Please wait, extracting:', ofname};
     h= msgbox(str);
@@ -241,6 +271,32 @@ if extractNeeded
 end
 
 return
+
+
+function okFlag= data_download_urlwrite12(url, ofname)
+% if ofname ends as .zip and url does not contain ||
+% then use the novel fn data_download_urlwrite2()
+
+okFlag= 1;
+if ~isempty( strfind(upper(ofname), '.ZIP') ) && ...
+        strcmpi( ofname(end-3:end), '.ZIP' ) && ...
+        isempty( strfind(url, '|') )
+    % use a novel version to handle Dropbox & a ZIP file
+    try
+        data_download_urlwrite2(url, ofname);
+    catch
+        okFlag= 0;
+    end
+else
+    % use the older versions for cases of password
+    try
+        data_download_urlwrite(url, ofname);
+    catch
+        okFlag= 0;
+    end
+end
+
+return; % end of function
 
 
 function fname= url2zipfname(url)

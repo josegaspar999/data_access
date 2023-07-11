@@ -2,10 +2,10 @@ function data_download_urlwrite2( url, ofname )
 % Download from an URL using curl.exe
 % Handle Dropbox responses changing urls
 
-% Jul2022 J. Gaspar
+% Jul2022, Oct2022 (Dropbox ans changed), J. Gaspar
 
 % future:
-% handle GDrive
+% handle GDrive and/or OneDrive
 % handle passwords as in omni (use data_download_urlwrite.m ?)
 
 data_curl_zip( url, ofname );
@@ -31,7 +31,7 @@ end
 
 % file still to download, or re-download if it was not a zip file
 [p,f,e]= fileparts( ofname );
-str= ['curl --output "' f e '" --ssl-no-revoke --url ' url];
+str= ['curl -L --output "' f e '" --ssl-no-revoke --url ' url];
 cd0= cd; cd(p)
 try
     %[status, cmdout]= system(str);
@@ -44,6 +44,8 @@ cd(cd0);
 % check the file to see if it is a zip
 [zipFileFlag, url2]= check_zip_file( url, ofname );
 if ~zipFileFlag
+    % recursive calling to try again changing to a new (given) url...
+    fprintf(1, 'New URL: %s\n', url2);
     data_curl_zip( url2, ofname, nTries );
 end
 return
@@ -112,6 +114,19 @@ end
 str= text_between( x, 'The resource was found at ', ';' );
 if ~isempty(str)
     url2= str;
+
+    temp= 'https://';
+    if strncmp(url2, temp, length(temp))
+        % is a full url, can return
+        return
+    end
+    
+    % did not bring a full url, try a standard completion...
+    temp= 'https://www.dropbox.com';
+    if ~strncmp(url2, temp, length(temp))
+        url2= [temp url2 '?dl=1'];
+    end
+    
     return
 end
 
